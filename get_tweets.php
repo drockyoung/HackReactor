@@ -1,8 +1,8 @@
 <?php
 require_once('twitter_proxy.php');
 // Twitter OAuth Config options
-$oauth_access_token = 'your-token-here';
-$oauth_access_token_secret = 'your-token-secret';
+$oauth_access_token = '88054807-TAzqVok9HJAcFE0uF1FHQ9fH8SY8xcXt5Gn21sZWz';
+$oauth_access_token_secret = 'i8tiBu3Slux9bJeOTlKTL3VpVEWrHBaFRXodAjddEbkeg';
 $consumer_key = 'gwkXakrc6o0bm2pLMTWth8vBp';
 $consumer_secret = 'KqsseI2h03ZYmafVxO06gCUg7bw1u7enD3j65elaDiQyuEjyyh';
 $user_id = '88054807';
