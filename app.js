@@ -1,3 +1,10 @@
+/*
+This application takes input from the user, an artist's name, and finds related
+artists. It stores the top tracks from the input artist and related artists and
+randomly selects 25 songs from that pool to create a playlist.
+*/
+
+
 window.onload = addListeners;
 
 //Global Variables
@@ -35,13 +42,14 @@ function getRequest(callback, url) {
 artist returned from the search criteria. */
 var searchArtist = function(result) {
   var artist = JSON.parse(result); //Parse the JSON response
-  artist = artist.artists.items[0]; //Get first artist in response
   var artistDiv = document.getElementById('artistDiv');
+
+  artist = artist.artists.items[0]; //Get first artist in response
   artistDiv.innerHTML = setArtistDiv(artist);
 
   if(artist != null) {
-    allArtists.push(artist.id);
     var relatedURL = buildRelatedURL(artist.id);
+    allArtists.push(artist.id); //Add search artist to the pool of artists
     getRequest(searchRelated, relatedURL);
   }
 };
@@ -66,14 +74,18 @@ var searchRelated = function(result) {
 //Find the top tracks of each artist and set the Playlist DIV
 var searchTopTracks = function(result) {
   var topTracks = JSON.parse(result); //Parse the JSON response
-  topTracks = topTracks.tracks; //Unwrap the Tracks object
   var playlistDiv = document.getElementById('playlist');
 
+  topTracks = topTracks.tracks; //Unwrap the Tracks object
+
+  //For each top track, push the track name, artist, and preview URL
+  //to the allTopTracks array
   topTracks.forEach(function(track) {
     allTopTracks.push(new trackObj(track.name, track.artists[0].name, track.preview_url));
   });
 
-  //Set the inner HTML of the playlist DIV once there are enough elements in allTopTracks
+  //Set the inner HTML of the playlist DIV once there are enough
+  //elements in allTopTracks
   if(allTopTracks.length > playlistLen) {
     playlistDiv.innerHTML = setPlaylistDiv(allTopTracks);
   }
@@ -138,7 +150,7 @@ function topTracksURL(id) {
   return base + id + '/top-tracks?country=US';
 }
 
-//Builds the image HTML item for use in artist DIV sectio
+//Builds the image HTML item for use in artist DIV section
 //Shrink variable keeps the image within the imagepx range
 function imageURL (artist) {
   var imagepx = 200;//The longer of width or height is set to this value
