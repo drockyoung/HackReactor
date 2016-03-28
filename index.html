@@ -1,16 +1,23 @@
-<head>
-  <link rel="stylesheet" type="text/css" href="style.css">
-  <script src="app.js"></script>
-</head>
-<body>
-  <h1>Create a Custom Playlist</h1>
-  <div class="container">
-      <p>Type an artist name and click "Search"</p>
-      <input type="text" id="artist" value="" class="form-control" placeholder="Type an Artist Name"/>
-      <input type="submit" id="search" value="Search" />
-      <div id="artistDiv"></div>
-  </div>
-  <div class="results">
-    <div id="playlist"></div>
-  </div>
-</body>
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <title>Music Search Engine</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+    <script src="app.js"></script>
+  </head>
+  <body>
+    <div class="header">
+      <h2>Create a Custom Playlist</h2>
+    <div>
+    <div class="container">
+        <p>Type an artist name and click "Search"</p>
+        <input type="text" id="artist" value="" class="form-control" placeholder="Type an Artist Name"/>
+        <input type="submit" id="search" value="Search" />
+        <div id="artistDiv"></div>
+    </div>
+    <div class="results">
+      <div id="playlist"></div>
+    </div>
+  </body>
+</html>

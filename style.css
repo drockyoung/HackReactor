@@ -1,9 +1,16 @@
 body {
-  padding: 20px;
-  background-color: 00BFFF;
+  padding: 0px;
+  margin: 0px;
+  background-color: #00BFFF;
+  font-family: 'Roboto', sans-serif;
+}
+
+.header {
+  padding: 10px;
 }
 
 .container {
+  padding-left: 10px;
   float: left;
 }
 
@@ -15,4 +22,12 @@ body {
 
 a:link {
   color: DFE0E2;
+}
+
+#artistDiv {
+  padding-top: 10px;
+}
+
+h2 {
+  padding-left: 10px;
 }
