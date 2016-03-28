@@ -1,19 +1,18 @@
 body {
-    padding: 20px;
-}
-#search-form, .form-control {
-    margin-bottom: 20px;
+  padding: 20px;
+  background-color: 00BFFF;
 }
 
 .container {
-    float: left;
+  float: left;
 }
 
 .results {
-    float: left;
-    padding-left: 20px;
-    padding-top: 17px;
+  float: left;
+  padding-left: 40px;
+  padding-top: 17px;
 }
 
-ol {
+a:link {
+  color: DFE0E2;
 }
