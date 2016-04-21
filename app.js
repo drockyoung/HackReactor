@@ -14,6 +14,9 @@ var playlistLen = 25;
 
 function addListeners() {
   document.getElementById('search').addEventListener('click', clickSearch);
+  document.getElementById('artist').addEventListener('keypress', function(key) {
+    if (key.keyCode === 13) clickSearch();
+  });
 }
 
 function clickSearch () {
