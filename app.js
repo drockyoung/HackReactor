@@ -30,11 +30,11 @@ function clickSearch () {
 
 //Send the get request to Spotify
 //Calls the callback function once the message is ready
-function getRequest(callback, url) {
+function getRequest(callback, url, ready) {
   var oReq = new XMLHttpRequest();
   oReq.onreadystatechange = function () {
     if (oReq.readyState === 4 && oReq.status === 200) {
-      callback(oReq.responseText);
+      callback(oReq.responseText, ready);
     }
   };
   oReq.open('GET', url);
@@ -60,22 +60,24 @@ var searchArtist = function(result) {
 
 //Locate artists related to the search artist and store those artists' ids
 var searchRelated = function(result) {
+  var ready = false;
   var related = JSON.parse(result); //Parse the JSON response
   related = related.artists; //Unwrap the Artists object
 
-  //Store each artist ID in an array
+  //Push each related artist to the AllArtists array
   related.forEach(function(artist) {
     allArtists.push(artist.id);
   });
 
-  //For each artist ID, search for their top tracks
-  allArtists.forEach(function(id, index) {
-    getRequest(searchTopTracks, topTracksURL(id));
-  });
+  //Search top tracks for each artist in AllArtists
+  for(var i = 0; i < allArtists.length; i++){
+    if(i === allArtists.length - 1) ready = true;
+    getRequest(searchTopTracks, topTracksURL(allArtists[i]), ready);
+  }
 }
 
 //Find the top tracks of each artist and set the Playlist DIV
-var searchTopTracks = function(result) {
+var searchTopTracks = function(result, ready) {
   var topTracks = JSON.parse(result); //Parse the JSON response
   var playlistDiv = document.getElementById('playlist');
 
@@ -89,8 +91,9 @@ var searchTopTracks = function(result) {
 
   //Set the inner HTML of the playlist DIV once there are enough
   //elements in allTopTracks
-  if(allTopTracks.length > playlistLen) {
-    playlistDiv.innerHTML = setPlaylistDiv(allTopTracks);
+  if(ready) {
+    var playlist = createPlaylist(allTopTracks);
+    playlistDiv.innerHTML = setPlaylistDiv(playlist);
   }
 }
 
@@ -102,22 +105,31 @@ function setArtistDiv(artist) {
   return text + imageURL(artist);
 }
 
-//Builds the inner HTMl for the playlist Div
-function setPlaylistDiv(tracks) {
-  var result = '<ol>';
-  var header = '<b>Your custom playlist:</b><br>';
+//Creates the playlist to be displayed to the user
+function createPlaylist(tracks) {
+  var songs = [];
   var indexes = randomNums(tracks.length);
-
-  for(var i = 0; i < playlistLen; i++) {
-    result += '<li><a href="' + tracks[indexes[i]].url + '" target="_blank">'
-    + tracks[indexes[i]].track + '</a> by '
-    + tracks[indexes[i]].artist + '</li>';
+  for(var i = 0; i < indexes.length; i++) {
+    songs.push(tracks[indexes[i]]);
   }
-
-  return header + result;
+  return songs;
 }
 
-//Create an array of random numbers of length == playlistLen
+//Builds the inner HTMl for the playlist Div
+function setPlaylistDiv(playlist) {
+  var header = '<b>Your custom playlist:</b><br>';
+  var result = '<ol>';
+
+  playlist.forEach(function(song) {
+    result += '<li><a href="' + song.url + '" target="_blank">'
+    + song.track + '</a> by '
+    + song.artist + '</li>';
+  });
+
+  return header + result + '</ol>';
+}
+
+//Create an array of random, non-repeating numbers of length == playlistLen
 function randomNums (numTracks) {
   var randoms = [];
 
@@ -164,6 +176,7 @@ function imageURL (artist) {
   var max = Math.max(width, height);
   var shrink = imagepx/max;
 
+  //The image is "shrunk" to a max width or height of var imagepx
   width *= shrink;
   height *= shrink;
 
